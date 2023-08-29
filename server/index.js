@@ -1,13 +1,52 @@
 import Pathfinding from "pathfinding";
 import { Server } from "socket.io";
+import { createServer } from "http";
+import "dotenv/config";
 
-const io = new Server({
+const httpServer = createServer();
+
+const io = new Server(httpServer, {
   cors: {
-    origin: "http://localhost:5173",
+    origin: "*",
+    credentials: true,
   },
 });
 
-io.listen(3001);
+httpServer.listen(process.env.PORT || 3001);
+
+// const githubContrib = [];
+
+// const query = `
+//   query ContributionGraph {
+//     user(login: "BnGyA") {
+//       contributionsCollection(
+//         from: "2022-01-01T00:00:00+00:00"
+//         to: "2022-12-31T00:00:00+00:00"
+//       ) {
+//         contributionCalendar {
+//           weeks {
+//             contributionDays {
+//               contributionCount
+//               weekday
+//               date
+//             }
+//           }
+//         }
+//       }
+//     }
+//   }
+// `;
+
+// fetch("https://api.github.com/graphql", {
+//   method: "POST",
+//   body: JSON.stringify({ query }),
+//   headers: {
+//     Authorization: `Bearer ${process.env.API_KEY}`,
+//   },
+// })
+//   .then((res) => res.text())
+//   .then((body) => githubContrib.push(JSON.parse(body)))
+//   .catch((error) => console.error(error));
 
 const characters = [];
 
