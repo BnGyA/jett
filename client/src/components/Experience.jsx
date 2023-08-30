@@ -14,9 +14,12 @@ import * as THREE from "three";
 import { Item } from "./Item";
 import { useThree } from "@react-three/fiber";
 import { useGrid } from "../hooks/useGrid";
+import { Gameboy } from "./Gameboy";
+import { Mascot } from "./Mascots/Mascot";
 
 export const Experience = () => {
   const [characters] = useAtom(charactersAtom);
+  console.log(characters);
   const [map] = useAtom(mapAtom);
   const [onFloor, setOnfloor] = useState(false);
   const [user] = useAtom(userAtom);
@@ -35,7 +38,6 @@ export const Experience = () => {
     );
   };
 
-  console.log(characters[0].position);
   return (
     <>
       <OrbitControls />
@@ -57,8 +59,21 @@ export const Experience = () => {
         <planeBufferGeometry args={map.size} />
         <meshStandardMaterial color="#f0f0f0" />
       </mesh>
-      <Grid infiniteGrid fadeDistance={50} fadeStrength={5} />
+      <Gameboy />
       {characters.map((character) => (
+        <Mascot
+          key={character.id}
+          id={character.id}
+          path={character.path}
+          position={gridToVector3(character.position)}
+          hairColor={character.hairColor}
+          topColor={character.topColor}
+          bottomColor={character.bottomColor}
+          model={character.model}
+        />
+      ))}
+      <Grid infiniteGrid fadeDistance={50} fadeStrength={5} />
+      {/* {characters.map((character) => (
         <AnimatedWoman
           key={character.id}
           id={character.id}
@@ -68,7 +83,7 @@ export const Experience = () => {
           topColor={character.topColor}
           bottomColor={character.bottomColor}
         />
-      ))}
+      ))} */}
     </>
   );
 };

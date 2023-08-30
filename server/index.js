@@ -4,6 +4,7 @@ import { createServer } from "http";
 import "dotenv/config";
 import express from "express";
 import cors from "cors";
+import models from "./models.js";
 
 const app = express();
 app.use(cors());
@@ -512,6 +513,10 @@ const generateRandomHexColor = () => {
   return "#" + Math.floor(Math.random() * 16777215).toString(16);
 };
 
+const generateRandomModel = () => {
+  return models[Math.floor(Math.random() * models.length)];
+};
+
 io.on("connection", (socket) => {
   console.log("user connected");
 
@@ -521,6 +526,7 @@ io.on("connection", (socket) => {
     hairColor: generateRandomHexColor(),
     topColor: generateRandomHexColor(),
     bottomColor: generateRandomHexColor(),
+    model: generateRandomModel(),
   });
 
   socket.emit("hello", {
