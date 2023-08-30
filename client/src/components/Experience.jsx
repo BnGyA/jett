@@ -9,7 +9,7 @@ import { AnimatedWoman } from "./AnimatedWoman";
 import { charactersAtom, mapAtom, userAtom } from "./SocketManager";
 import { useAtom } from "jotai";
 import { socket } from "./SocketManager";
-import { useState } from "react";
+import { Suspense, useState } from "react";
 import * as THREE from "three";
 import { Item } from "./Item";
 import { useThree } from "@react-three/fiber";
@@ -19,7 +19,6 @@ import { Mascot } from "./Mascots/Mascot";
 
 export const Experience = () => {
   const [characters] = useAtom(charactersAtom);
-  console.log(characters);
   const [map] = useAtom(mapAtom);
   const [onFloor, setOnfloor] = useState(false);
   const [user] = useAtom(userAtom);
@@ -38,52 +37,46 @@ export const Experience = () => {
     );
   };
 
+  if (!map) return null;
+  console.log("map", map);
+
   return (
     <>
-      <OrbitControls />
-      <Environment preset="sunset" />
-      <ambientLight intensity={0.5} />
+      <Suspense fallback={null}>
+        <OrbitControls />
+        <Environment preset="sunset" />
+        <ambientLight intensity={0.5} />
 
-      {map.items.map((item, idx) => (
-        <Item key={`${item.name}-${idx}`} item={item} />
-      ))}
-      <mesh
-        rotation-x={-Math.PI / 2}
-        position-y={-0.001}
-        onClick={onCharacterMove}
-        onPointerEnter={() => setOnfloor(true)}
-        onPointerLeave={() => setOnfloor(false)}
-        position-x={map.size[0] / 2}
-        position-z={map.size[1] / 2}
-      >
-        <planeBufferGeometry args={map.size} />
-        <meshStandardMaterial color="#f0f0f0" />
-      </mesh>
-      <Gameboy />
-      {characters.map((character) => (
-        <Mascot
-          key={character.id}
-          id={character.id}
-          path={character.path}
-          position={gridToVector3(character.position)}
-          hairColor={character.hairColor}
-          topColor={character.topColor}
-          bottomColor={character.bottomColor}
-          model={character.model}
-        />
-      ))}
-      <Grid infiniteGrid fadeDistance={50} fadeStrength={5} />
-      {/* {characters.map((character) => (
-        <AnimatedWoman
-          key={character.id}
-          id={character.id}
-          path={character.path}
-          position={gridToVector3(character.position)}
-          hairColor={character.hairColor}
-          topColor={character.topColor}
-          bottomColor={character.bottomColor}
-        />
-      ))} */}
+        {map?.items?.map((item, idx) => (
+          <Item key={`${item.name}-${idx}`} item={item} />
+        ))}
+        <mesh
+          rotation-x={-Math.PI / 2}
+          position-y={-0.001}
+          onClick={onCharacterMove}
+          onPointerEnter={() => setOnfloor(true)}
+          onPointerLeave={() => setOnfloor(false)}
+          position-x={map.size[0] / 2}
+          position-z={map.size[1] / 2}
+        >
+          <planeBufferGeometry args={map.size} />
+          <meshStandardMaterial color="#f0f0f0" />
+        </mesh>
+        <Gameboy />
+        {characters.map((character) => (
+          <Mascot
+            key={character.id}
+            id={character.id}
+            path={character.path}
+            position={gridToVector3(character.position)}
+            hairColor={character.hairColor}
+            topColor={character.topColor}
+            bottomColor={character.bottomColor}
+            model={character.model}
+          />
+        ))}
+        <Grid infiniteGrid fadeDistance={50} fadeStrength={5} />
+      </Suspense>
     </>
   );
 };
