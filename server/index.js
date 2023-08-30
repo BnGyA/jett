@@ -2,12 +2,18 @@ import Pathfinding from "pathfinding";
 import { Server } from "socket.io";
 import { createServer } from "http";
 import "dotenv/config";
+import express from "express";
+import cors from "cors";
 
-const httpServer = createServer();
+const app = express();
+app.use(cors());
+
+const httpServer = createServer(app);
 
 const io = new Server(httpServer, {
   cors: {
     origin: "*",
+    methods: ["GET", "POST"],
     credentials: true,
   },
 });
