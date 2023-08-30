@@ -2,7 +2,9 @@ import { useEffect } from "react";
 import { io } from "socket.io-client";
 import { atom, useAtom } from "jotai";
 
-export const socket = io("https://jett-world-48c38fc1c55f.herokuapp.com/");
+console.log(import.meta.env.VITE_IO_SERVER);
+
+export const socket = io(import.meta.env.VITE_IO_SERVER);
 export const charactersAtom = atom([]);
 export const mapAtom = atom(null);
 export const userAtom = atom(null);
