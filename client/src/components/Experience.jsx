@@ -2,20 +2,21 @@ import {
   ContactShadows,
   Environment,
   Grid,
+  Loader,
   OrbitControls,
   useCursor,
 } from "@react-three/drei";
-import { AnimatedWoman } from "./AnimatedWoman";
 import { charactersAtom, mapAtom, userAtom } from "./SocketManager";
 import { useAtom } from "jotai";
 import { socket } from "./SocketManager";
 import { Suspense, useState } from "react";
-import * as THREE from "three";
 import { Item } from "./Item";
+import { Mascot } from "./Mascots/Mascot";
 import { useThree } from "@react-three/fiber";
 import { useGrid } from "../hooks/useGrid";
 import { Gameboy } from "./Gameboy";
-import { Mascot } from "./Mascots/Mascot";
+import MainChar from "./MainChar";
+import GithubFloor from "./GithubFloor";
 
 export const Experience = () => {
   const [characters] = useAtom(charactersAtom);
@@ -38,7 +39,6 @@ export const Experience = () => {
   };
 
   if (!map) return null;
-  console.log("map", map);
 
   return (
     <>
@@ -48,7 +48,11 @@ export const Experience = () => {
         <ambientLight intensity={0.5} />
 
         {map?.items?.map((item, idx) => (
-          <Item key={`${item.name}-${idx}`} item={item} />
+          <>
+            {item.notAModel === undefined && (
+              <Item key={`${item.name}-${idx}`} item={item} />
+            )}
+          </>
         ))}
         <mesh
           rotation-x={-Math.PI / 2}
@@ -63,6 +67,9 @@ export const Experience = () => {
           <meshStandardMaterial color="#f0f0f0" />
         </mesh>
         <Gameboy />
+
+        <GithubFloor />
+        {/* <MainChar /> */}
         {characters.map((character) => (
           <Mascot
             key={character.id}

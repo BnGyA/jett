@@ -2,10 +2,15 @@ import React, { useEffect, useMemo, useRef, useState } from "react";
 import { useGLTF, useAnimations } from "@react-three/drei";
 import { useFrame, useGraph } from "@react-three/fiber";
 import { SkeletonUtils } from "three-stdlib";
-import { userAtom } from "../SocketManager";
+import {
+  userAtom,
+  releasedCameraAtom,
+  releasingCameraAtom,
+} from "../SocketManager";
 import { useAtom } from "jotai";
 import { useGrid } from "../../hooks/useGrid";
 import { useTexture } from "@react-three/drei";
+import { Vector3 } from "three";
 
 const MOUVEMENT_SPEED = 0.062;
 
@@ -15,8 +20,6 @@ export function Mascot({ id, model, hairColor, ...props }) {
     roughtnessMap: `/models/textures/${model.id}/Mascot_Roughtness.png`,
   });
   texture.colorMap.flipY = false;
-
-  console.log(texture.base);
 
   const position = useMemo(() => props.position, []);
   const [path, setPath] = useState();
@@ -35,7 +38,7 @@ export function Mascot({ id, model, hairColor, ...props }) {
     `/models/Mascot-${model.id}.glb`
   );
   // Skinned mesh cannot be re-used in threejs without cloning them
-  const clone = useMemo(() => SkeletonUtils.clone(scene), [scene]);
+  let clone = useMemo(() => SkeletonUtils.clone(scene), [scene]);
   // useGraph creates two flat object collections for nodes and materials
   const { nodes } = useGraph(clone);
 
@@ -48,8 +51,16 @@ export function Mascot({ id, model, hairColor, ...props }) {
     return () => actions[animation]?.fadeOut(0.32);
   }, [animation, actions]);
 
+  useEffect(() => {
+    console.log("change model", model.id);
+    setAnimation("Idle");
+    (clone = SkeletonUtils.clone(scene)), [scene];
+  }, [model.id]);
+
   // used to follow the user with the camera
   const [user] = useAtom(userAtom);
+  const [releasedCamera] = useAtom(releasedCameraAtom);
+  const [releasingCamera] = useAtom(releasingCameraAtom);
 
   useFrame((state) => {
     if (path?.length && group.current.position.distanceTo(path[0]) > 0.1) {
@@ -66,16 +77,28 @@ export function Mascot({ id, model, hairColor, ...props }) {
     } else {
       setAnimation("Idle");
     }
-    if (id === user) {
+    if (releasingCamera) {
+      const vec = new Vector3();
+
+      state.camera.position.lerp(
+        vec.set(
+          group.current.position.x + 8,
+          group.current.position.y + 8,
+          group.current.position.z + 8
+        ),
+        0.05
+      );
+      state.camera.lookAt(group.current.position);
+    }
+    if (id === user && releasedCamera) {
       // 8 is the default camera position, this is used to follow the user
+      state.camera.position.x = group.current.position.x + 8;
       state.camera.position.x = group.current.position.x + 8;
       state.camera.position.y = group.current.position.y + 8;
       state.camera.position.z = group.current.position.z + 8;
       state.camera.lookAt(group.current.position);
     }
   });
-
-  console.log(`nodes.${model?.name}.geometry`);
 
   return (
     <group
@@ -84,6 +107,8 @@ export function Mascot({ id, model, hairColor, ...props }) {
       dispose={null}
       position={position}
       name={`character-${id}`}
+      onPointerEnter={() => setAnimation("Run")}
+      onPointerLeave={() => setAnimation("Idle")}
     >
       <group name="Scene">
         <group

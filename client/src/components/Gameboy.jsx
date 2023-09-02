@@ -33,7 +33,6 @@ export function Gameboy({ ...props }) {
           position={[0, 0.3, -0.36]}
           scale={[0.9, 0.3, 0.9]}
         />
-
         <mesh
           geometry={nodes.Joystick.geometry}
           material={materials["Material.004"]}
