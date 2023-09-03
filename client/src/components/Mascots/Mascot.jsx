@@ -88,7 +88,6 @@ export function Mascot({ id, model, hairColor, ...props }) {
         ),
         0.05
       );
-      state.camera.lookAt(group.current.position);
     }
     if (id === user && releasedCamera) {
       // 8 is the default camera position, this is used to follow the user
@@ -106,6 +105,7 @@ export function Mascot({ id, model, hairColor, ...props }) {
       {...props}
       dispose={null}
       position={position}
+      rotation={[0, Math.PI, 0]}
       name={`character-${id}`}
       onPointerEnter={() => setAnimation("Run")}
       onPointerLeave={() => setAnimation("Idle")}

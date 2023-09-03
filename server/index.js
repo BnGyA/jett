@@ -196,7 +196,10 @@ io.on("connection", (socket) => {
     characters.push({
       id: socket.id,
       // position: generateRandomPosition(),
-      position: [0, 0, 0],
+      position: [
+        map.size[0] * map.gridDivision - 1,
+        map.size[1] * map.gridDivision - 1,
+      ],
       hairColor: generateRandomHexColor(),
       topColor: generateRandomHexColor(),
       bottomColor: generateRandomHexColor(),

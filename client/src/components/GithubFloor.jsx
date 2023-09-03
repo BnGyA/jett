@@ -104,7 +104,7 @@ const GithubFloor = () => {
       .weeks;
 
   return (
-    <group scale={[0.2, 0.2, 0.2]} position={[20, 0, 20]} rotation-y={Math.PI}>
+    <group scale={[0.2, 0.2, 0.2]} position={[15, 0, 15]} rotation-y={Math.PI}>
       {githubContribWeeks.map((week, weekIndex) => (
         <Week week={week} weekIndex={weekIndex} />
       ))}

@@ -12,6 +12,11 @@ export const githubContribAtom = atom(null);
 export const confirmStatusAtom = atom(false);
 export const releasedCameraAtom = atom(false);
 export const releasingCameraAtom = atom(false);
+export const dialogAtom = atom({
+  active: false,
+  char: "",
+  text: "",
+});
 
 export const SocketManager = () => {
   const [_characters, setCharacters] = useAtom(charactersAtom);

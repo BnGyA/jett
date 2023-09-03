@@ -12,11 +12,12 @@ import { socket } from "./SocketManager";
 import { Suspense, useState } from "react";
 import { Item } from "./Item";
 import { Mascot } from "./Mascots/Mascot";
-import { useThree } from "@react-three/fiber";
+import { useFrame, useThree } from "@react-three/fiber";
 import { useGrid } from "../hooks/useGrid";
 import { Gameboy } from "./Gameboy";
 import MainChar from "./MainChar";
 import GithubFloor from "./GithubFloor";
+import Dialog from "./Dialog";
 
 export const Experience = () => {
   const [characters] = useAtom(charactersAtom);
@@ -39,11 +40,13 @@ export const Experience = () => {
   };
 
   if (!map) return null;
-
+  useFrame((state) => {
+    state.camera.lookAt(20, 0.25, 20);
+  });
   return (
     <>
       <Suspense fallback={null}>
-        <OrbitControls />
+        {/* <OrbitControls /> */}
         <Environment preset="sunset" />
         <ambientLight intensity={0.5} />
 
@@ -69,7 +72,8 @@ export const Experience = () => {
         <Gameboy />
 
         <GithubFloor />
-        {/* <MainChar /> */}
+        <MainChar />
+
         {characters.map((character) => (
           <Mascot
             key={character.id}
