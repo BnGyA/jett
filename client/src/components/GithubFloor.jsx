@@ -100,7 +100,7 @@ const Week = ({ week }) => {
 const GithubFloor = () => {
   const [githubContrib] = useAtom(githubContribAtom);
   const githubContribWeeks =
-    githubContrib[0].data.user.contributionsCollection.contributionCalendar
+    githubContrib[0].data.user?.contributionsCollection.contributionCalendar
       .weeks;
 
   return (

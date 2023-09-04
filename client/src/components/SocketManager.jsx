@@ -14,7 +14,7 @@ export const releasedCameraAtom = atom(false);
 export const releasingCameraAtom = atom(false);
 export const dialogAtom = atom({
   active: false,
-  char: "",
+  char: "Benjamin",
   text: "",
 });
 
