@@ -5,7 +5,11 @@ const TrophiesRoom = () => {
   return (
     <>
       <Arcade position={[0, 0, 0]} />
-      <Github position={[2.5, 0.55, 2.53]} />
+      <Github
+        position={[2.5, 0.5, 2.53]}
+        animated
+        rotation={[Math.PI / 2, 0, -Math.PI / 4]}
+      />
     </>
   );
 };

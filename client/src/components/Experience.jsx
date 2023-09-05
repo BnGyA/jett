@@ -1,21 +1,38 @@
 import { Environment, Grid, OrbitControls } from "@react-three/drei";
-import { charactersAtom, mapAtom } from "./SocketManager";
+import {
+  charactersAtom,
+  mapAtom,
+  socket,
+  tpAtom,
+  userAtom,
+} from "./SocketManager";
 import { useAtom } from "jotai";
-import { Suspense } from "react";
+import { Suspense, useEffect } from "react";
 import { Item } from "./Item";
 import { Mascot } from "./Mascots/Mascot";
-import { useFrame } from "@react-three/fiber";
-import { Gameboy } from "./Gameboy";
+import { useFrame, useThree } from "@react-three/fiber";
 import MainChar from "./MainChar";
-import GithubFloor from "./GithubFloor";
 import Map from "./Map";
 import { useGrid } from "../hooks/useGrid";
 import TrophiesRoom from "./Trophies/TrophiesRoom";
+import GithubRoom from "./GithubRoom/GithubRoom";
 
 export const Experience = ({ debug }) => {
   const [characters] = useAtom(charactersAtom);
   const [map] = useAtom(mapAtom);
   const { gridToVector3 } = useGrid();
+
+  const [tp] = useAtom(tpAtom);
+  const scene = useThree((state) => state.scene);
+  const [user] = useAtom(userAtom);
+
+  useEffect(() => {
+    if (tp.teleportingTo !== null) {
+      const character = scene.getObjectByName(`character-${user}`);
+      if (!character) return;
+      socket.emit("teleport", tp.coords);
+    }
+  }, [tp]);
 
   if (!map) return null;
   useFrame((state) => {
@@ -32,13 +49,13 @@ export const Experience = ({ debug }) => {
         <ambientLight intensity={0.2} />
         <directionalLight
           position={[-4, 4, -4]}
-          intensity={0.35}
+          intensity={0.5}
           castShadow
           shadow-mapSize={[1024, 1024]}
         >
           <orthographicCamera
             attach={"shadow-camera"}
-            args={[-map.size[0], map.size[1], 20, -20]}
+            args={[-map.size[0], map.size[1], 50, -50]}
             far={map.size[0] + map.size[1]}
           />
         </directionalLight>
@@ -57,9 +74,10 @@ export const Experience = ({ debug }) => {
         ))}
         <Map />
         {/* <Gameboy /> */}
-        {/* <GithubFloor /> */}
+
         <MainChar />
         <TrophiesRoom />
+        <GithubRoom />
         {!debug && (
           <>
             {characters.map((character) => (

@@ -11,6 +11,7 @@ export default function Github({ ...props }) {
   const { nodes, materials } = useGLTF("./models/TrophiesRoom/github.glb");
 
   useFrame(() => {
+    if (!props.animated) return;
     group.current.position.y += Math.sin(Date.now() * 0.001) * 0.001;
   });
 
@@ -20,7 +21,7 @@ export default function Github({ ...props }) {
         geometry={nodes.Curve.geometry}
         material={materials["SVGMat.001"]}
         position={[0, 1.12, 0]}
-        rotation={[Math.PI / 2, 0, Math.PI / 4]}
+        // rotation={[Math.PI / 2, 0, -Math.PI / 4]}
         scale={[100 / 4, 20 / 4, 100 / 4]}
       />
     </group>

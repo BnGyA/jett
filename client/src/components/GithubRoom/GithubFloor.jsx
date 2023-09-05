@@ -1,4 +1,5 @@
-import { githubContribAtom } from "./SocketManager";
+import { Text, Text3D } from "@react-three/drei";
+import { githubContribAtom } from "../SocketManager";
 import { useAtom } from "jotai";
 
 function getWeekNumber(dateString) {
@@ -29,7 +30,6 @@ function removeLeadingZeroFromNumber(num) {
 }
 
 const calculateYCoord = (monthNum, weekday) => {
-  let calculatedDayNum;
   return weekday + monthNum * 5;
 };
 
@@ -44,7 +44,7 @@ const calculateZCoord = (monthNum, weekNum) => {
   } else if (monthNum === 10 || monthNum === 11 || monthNum === 12) {
     calculatedMonthNum = monthNum - 9;
   }
-  return weekNum + calculatedMonthNum * 7;
+  return weekNum + calculatedMonthNum * 12 - 5;
 };
 
 const calculatedContrib = (contributionLevel) => {
@@ -79,7 +79,7 @@ const Box = ({ day }) => {
       castShadow
     >
       <boxBufferGeometry
-        args={[0.5, calculatedContrib(day.contributionLevel), 0.5]}
+        args={[0.5, calculatedContrib(day.contributionLevel) * 5, 0.5]}
       />
       <meshStandardMaterial
         color={day.contributionLevel === "NONE" ? "#39d353" : "#40c463"}
@@ -98,18 +98,131 @@ const Week = ({ week }) => {
   );
 };
 
+const months = [
+  {
+    position: [10, 1, 15],
+    id: "January",
+  },
+  {
+    position: [14, 1, 26.5],
+    id: "February",
+  },
+  {
+    position: [18, 1, 38],
+    id: "March",
+  },
+  {
+    position: [24, 1, 15],
+    id: "April",
+  },
+  {
+    position: [29, 1, 26.5],
+    id: "May",
+  },
+  {
+    position: [34, 1, 38],
+    id: "June",
+  },
+  {
+    position: [39, 1, 15],
+    id: "July",
+  },
+  {
+    position: [44, 1, 26.5],
+    id: "August",
+  },
+  {
+    position: [49, 1, 38],
+    id: "September",
+  },
+  {
+    position: [54, 1, 15],
+    id: "October",
+  },
+  {
+    position: [59, 1, 26.5],
+    id: "November",
+  },
+  {
+    position: [64, 1, 38.5],
+    id: "December",
+  },
+];
+
 const GithubFloor = () => {
   const [githubContrib] = useAtom(githubContribAtom);
   const githubContribWeeks =
     githubContrib[0].data.user?.contributionsCollection.contributionCalendar
       .weeks;
 
+  const githubTotalContributions =
+    githubContrib[0].data.user?.contributionsCollection.contributionCalendar
+      .totalContributions;
+
   return (
-    <group scale={[0.2, 0.2, 0.2]} position={[15, 0, 15]} rotation-y={Math.PI}>
-      {githubContribWeeks.map((week, weekIndex) => (
-        <Week week={week} weekIndex={weekIndex} />
-      ))}
-    </group>
+    <>
+      <group scale={[0.18, 0.18, 0.18]} position={[35.5, 0, 0]}>
+        <Text3D
+          curveSegments={32}
+          bevelEnabled
+          bevelSize={0.04}
+          bevelThickness={0.1}
+          height={1.5}
+          lineHeight={0.5}
+          letterSpacing={-0.06}
+          size={5.5}
+          font="/Inter_Bold.json"
+          position={[20, 1, 1]}
+          castShadow
+        >
+          @BnGyA
+          <meshStandardMaterial color="#40c463" />
+        </Text3D>
+        <group position={[18, 1, 60]} rotation-z={Math.PI / 2}>
+          <Text3D
+            curveSegments={32}
+            bevelEnabled
+            bevelSize={0.04}
+            bevelThickness={0.1}
+            height={1.5}
+            lineHeight={0.5}
+            letterSpacing={-0.06}
+            size={3.5}
+            font="/Inter_Bold.json"
+            rotation={[0, Math.PI / 2, 0]}
+            castShadow
+          >
+            {githubTotalContributions}
+            <meshStandardMaterial color="#40c463" />
+          </Text3D>
+        </group>
+        <Text3D
+          curveSegments={32}
+          bevelEnabled
+          bevelSize={0.04}
+          bevelThickness={0.1}
+          height={1.5}
+          lineHeight={0.5}
+          letterSpacing={-0.06}
+          size={4.5}
+          font="/Inter_Bold.json"
+          position={[10, 1, 68]}
+          rotation={[0, Math.PI / 2, 0]}
+          castShadow
+        >
+          Commits
+          <meshStandardMaterial color="#40c463" />
+        </Text3D>
+        {githubContribWeeks.map((week, weekIndex) => (
+          <Week week={week} weekIndex={weekIndex} />
+        ))}
+        {months.map((month) => (
+          <Text color="black" position={month.position}>
+            {month.id}
+          </Text>
+        ))}
+      </group>
+    </>
   );
 };
 

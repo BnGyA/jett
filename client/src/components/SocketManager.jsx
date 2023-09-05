@@ -17,6 +17,13 @@ export const dialogAtom = atom({
   char: "Benjamin",
   text: "",
 });
+export const tpAtom = atom({
+  active: false,
+  github: false,
+  project: false,
+  teleportingTo: null,
+  room: null,
+});
 
 export const SocketManager = () => {
   const [_characters, setCharacters] = useAtom(charactersAtom);
@@ -44,8 +51,10 @@ export const SocketManager = () => {
     }
 
     function onPlayerMove(value) {
+      console.log(value);
       setCharacters((prev) => {
         return prev.map((character) => {
+          console.log(character);
           if (character.id === value.id) {
             return value;
           }

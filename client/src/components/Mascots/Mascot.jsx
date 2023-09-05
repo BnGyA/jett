@@ -3,9 +3,11 @@ import { useGLTF, useAnimations } from "@react-three/drei";
 import { useFrame, useGraph } from "@react-three/fiber";
 import { SkeletonUtils } from "three-stdlib";
 import {
+  socket,
   userAtom,
   releasedCameraAtom,
   releasingCameraAtom,
+  tpAtom,
 } from "../SocketManager";
 import { useAtom } from "jotai";
 import { useGrid } from "../../hooks/useGrid";
@@ -61,9 +63,18 @@ export function Mascot({ id, model, hairColor, ...props }) {
   const [user] = useAtom(userAtom);
   const [releasedCamera] = useAtom(releasedCameraAtom);
   const [releasingCamera] = useAtom(releasingCameraAtom);
+  const [tp, setTp] = useAtom(tpAtom);
 
   useFrame((state) => {
-    if (path?.length && group.current.position.distanceTo(path[0]) > 0.1) {
+    if (props.position && tp.teleportingTo !== null) {
+      setPath(null);
+      group.current.position.x = props.position.x;
+      group.current.position.z = props.position.z;
+      setTp({ ...tp, teleportingTo: null });
+    } else if (
+      path?.length &&
+      group.current.position.distanceTo(path[0]) > 0.1
+    ) {
       const direction = group.current.position
         .clone()
         .sub(path[0])

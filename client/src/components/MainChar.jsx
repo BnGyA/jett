@@ -6,8 +6,7 @@ import React, { useEffect, useRef, useState } from "react";
 import { useGLTF, useAnimations, useTexture } from "@react-three/drei";
 import { useThree } from "@react-three/fiber";
 import { useAtom } from "jotai";
-import { dialogAtom, userAtom } from "./SocketManager";
-import { socket } from "./SocketManager";
+import { dialogAtom, userAtom, socket } from "./SocketManager";
 import { useGrid } from "../hooks/useGrid";
 import { Vector3 } from "three";
 

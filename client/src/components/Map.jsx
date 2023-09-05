@@ -159,7 +159,7 @@ const Map = () => {
       </mesh>
 
       {/* Debug */}
-      <mesh
+      {/* <mesh
         rotation-x={-Math.PI / 2}
         position-y={-0.01}
         position-x={map.size[0] / 2}
@@ -168,7 +168,7 @@ const Map = () => {
       >
         <planeBufferGeometry args={map.size} />
         <meshStandardMaterial color="red" />
-      </mesh>
+      </mesh> */}
     </group>
   );
 };

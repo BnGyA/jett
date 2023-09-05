@@ -32,6 +32,7 @@ const query = `
         to: "2023-12-31T00:00:00+00:00"
       ) {
         contributionCalendar {
+          totalContributions
           weeks {
             contributionDays {
               contributionLevel
@@ -57,7 +58,7 @@ fetch("https://api.github.com/graphql", {
   .catch((error) => console.error(error));
 
 const characters = [];
-const hiddeNotModel = false;
+const hiddeNotModel = true;
 
 const items = {
   pillar: {
@@ -522,6 +523,17 @@ io.on("connection", (socket) => {
 
     character.position = from;
     character.path = path;
+    io.emit("playerMove", character);
+  });
+
+  socket.on("teleport", (coords) => {
+    const character = characters.find(
+      (character) => character.id === socket.id
+    );
+    if (!coords) return;
+    console.log(coords);
+    character.position = [43 * map.gridDivision - 1, 12 * map.gridDivision - 1];
+    character.path = [];
     io.emit("playerMove", character);
   });
 
