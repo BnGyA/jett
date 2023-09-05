@@ -14,6 +14,7 @@ export function Gameboy({ ...props }) {
         geometry={nodes.Gameboy001.geometry}
         material={materials["Material.001"]}
         rotation={[1.26, 0.21, -0.22]}
+        castShadow
       >
         <mesh
           geometry={nodes.Button1.geometry}

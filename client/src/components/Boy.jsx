@@ -94,12 +94,14 @@ export function Boy({ id, ...props }) {
               geometry={nodes.Mesh.geometry}
               material={materials.Character170_RiggedLittleMan_Max}
               skeleton={nodes.Mesh.skeleton}
+              castShadow
             />
             <skinnedMesh
               name="Mesh_1"
               geometry={nodes.Mesh_1.geometry}
               material={materials["Material #2"]}
               skeleton={nodes.Mesh_1.skeleton}
+              castShadow
             />
           </group>
         </group>

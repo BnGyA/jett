@@ -2,7 +2,7 @@ import { useGLTF } from "@react-three/drei";
 import { useAtom } from "jotai";
 import { mapAtom } from "./SocketManager";
 import { SkeletonUtils } from "three-stdlib";
-import { useMemo } from "react";
+import { useEffect, useMemo } from "react";
 
 export const Item = ({ item }) => {
   const { name, gridPosition, size, rotation } = item;
@@ -13,6 +13,15 @@ export const Item = ({ item }) => {
 
   const width = rotation === 1 || rotation === 3 ? size[1] : size[0];
   const height = rotation === 1 || rotation === 3 ? size[0] : size[1];
+
+  useEffect(() => {
+    clone.traverse((child) => {
+      if (child.isMesh) {
+        child.castShadow = true;
+        child.receiveShadow = true;
+      }
+    });
+  }, [clone]);
 
   return (
     <primitive

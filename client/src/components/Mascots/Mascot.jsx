@@ -107,8 +107,6 @@ export function Mascot({ id, model, hairColor, ...props }) {
       position={position}
       rotation={[0, Math.PI, 0]}
       name={`character-${id}`}
-      onPointerEnter={() => setAnimation("Run")}
-      onPointerLeave={() => setAnimation("Idle")}
     >
       <group name="Scene">
         <group
@@ -131,6 +129,7 @@ export function Mascot({ id, model, hairColor, ...props }) {
               name="Character266"
               geometry={nodes.Character266.geometry}
               skeleton={nodes.Character266.skeleton}
+              castShadow
             >
               <meshStandardMaterial
                 attach="material"
@@ -144,6 +143,7 @@ export function Mascot({ id, model, hairColor, ...props }) {
               name="Character179_RiggedMascot"
               geometry={nodes.Character179_RiggedMascot.geometry}
               skeleton={nodes.Character179_RiggedMascot.skeleton}
+              castShadow
             >
               <meshStandardMaterial
                 attach="material"
@@ -157,6 +157,7 @@ export function Mascot({ id, model, hairColor, ...props }) {
               name="Character254"
               geometry={nodes.Character254.geometry}
               skeleton={nodes.Character254.skeleton}
+              castShadow
             >
               <meshStandardMaterial
                 attach="material"
@@ -170,6 +171,7 @@ export function Mascot({ id, model, hairColor, ...props }) {
               name="Character247"
               geometry={nodes.Character247.geometry}
               skeleton={nodes.Character247.skeleton}
+              castShadow
             >
               <meshStandardMaterial
                 attach="material"
@@ -183,6 +185,7 @@ export function Mascot({ id, model, hairColor, ...props }) {
               name="Character249"
               geometry={nodes.Character249.geometry}
               skeleton={nodes.Character249.skeleton}
+              castShadow
             >
               <meshStandardMaterial
                 attach="material"
@@ -196,6 +199,7 @@ export function Mascot({ id, model, hairColor, ...props }) {
               name="Character265"
               geometry={nodes.Character265.geometry}
               skeleton={nodes.Character265.skeleton}
+              castShadow
             >
               <meshStandardMaterial
                 attach="material"

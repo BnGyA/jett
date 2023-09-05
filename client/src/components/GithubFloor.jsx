@@ -76,6 +76,7 @@ const Box = ({ day }) => {
         ),
       ]}
       onClick={() => console.log(day.date)}
+      castShadow
     >
       <boxBufferGeometry
         args={[0.5, calculatedContrib(day.contributionLevel), 0.5]}

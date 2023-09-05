@@ -1,43 +1,20 @@
-import {
-  ContactShadows,
-  Environment,
-  Grid,
-  Loader,
-  OrbitControls,
-  useCursor,
-} from "@react-three/drei";
-import { charactersAtom, mapAtom, userAtom } from "./SocketManager";
+import { Environment, Grid } from "@react-three/drei";
+import { charactersAtom, mapAtom } from "./SocketManager";
 import { useAtom } from "jotai";
-import { socket } from "./SocketManager";
-import { Suspense, useState } from "react";
+import { Suspense } from "react";
 import { Item } from "./Item";
 import { Mascot } from "./Mascots/Mascot";
-import { useFrame, useThree } from "@react-three/fiber";
-import { useGrid } from "../hooks/useGrid";
+import { useFrame } from "@react-three/fiber";
 import { Gameboy } from "./Gameboy";
 import MainChar from "./MainChar";
 import GithubFloor from "./GithubFloor";
-import Dialog from "./Dialog";
+import Map from "./Map";
+import { useGrid } from "../hooks/useGrid";
 
 export const Experience = () => {
   const [characters] = useAtom(charactersAtom);
   const [map] = useAtom(mapAtom);
-  const [onFloor, setOnfloor] = useState(false);
-  const [user] = useAtom(userAtom);
-  const { vector3ToGrid, gridToVector3 } = useGrid();
-  useCursor(onFloor);
-
-  const scene = useThree((state) => state.scene);
-
-  const onCharacterMove = (e) => {
-    const character = scene.getObjectByName(`character-${user}`);
-    if (!character) return;
-    socket.emit(
-      "move",
-      vector3ToGrid(character.position),
-      vector3ToGrid(e.point)
-    );
-  };
+  const { gridToVector3 } = useGrid();
 
   if (!map) return null;
   useFrame((state) => {
@@ -48,7 +25,19 @@ export const Experience = () => {
       <Suspense fallback={null}>
         {/* <OrbitControls /> */}
         <Environment preset="sunset" />
-        <ambientLight intensity={0.5} />
+        <ambientLight intensity={0.2} />
+        <directionalLight
+          position={[-4, 4, -4]}
+          intensity={0.35}
+          castShadow
+          shadow-mapSize={[1024, 1024]}
+        >
+          <orthographicCamera
+            attach={"shadow-camera"}
+            args={[-map.size[0], map.size[1], 20, -20]}
+            far={map.size[0] + map.size[1]}
+          />
+        </directionalLight>
 
         {map?.items?.map((item, idx) => (
           <>
@@ -57,20 +46,8 @@ export const Experience = () => {
             )}
           </>
         ))}
-        <mesh
-          rotation-x={-Math.PI / 2}
-          position-y={-0.001}
-          onClick={onCharacterMove}
-          onPointerEnter={() => setOnfloor(true)}
-          onPointerLeave={() => setOnfloor(false)}
-          position-x={map.size[0] / 2}
-          position-z={map.size[1] / 2}
-        >
-          <planeBufferGeometry args={map.size} />
-          <meshStandardMaterial color="#f0f0f0" />
-        </mesh>
+        <Map />
         <Gameboy />
-
         <GithubFloor />
         <MainChar />
 
