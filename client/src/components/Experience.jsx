@@ -1,4 +1,4 @@
-import { Environment, Grid } from "@react-three/drei";
+import { Environment, Grid, OrbitControls } from "@react-three/drei";
 import { charactersAtom, mapAtom } from "./SocketManager";
 import { useAtom } from "jotai";
 import { Suspense } from "react";
@@ -10,20 +10,24 @@ import MainChar from "./MainChar";
 import GithubFloor from "./GithubFloor";
 import Map from "./Map";
 import { useGrid } from "../hooks/useGrid";
+import TrophiesRoom from "./Trophies/TrophiesRoom";
 
-export const Experience = () => {
+export const Experience = ({ debug }) => {
   const [characters] = useAtom(charactersAtom);
   const [map] = useAtom(mapAtom);
   const { gridToVector3 } = useGrid();
 
   if (!map) return null;
   useFrame((state) => {
-    state.camera.lookAt(20, 0.25, 20);
+    if (!debug) {
+      state.camera.lookAt(20, 0.25, 20);
+    }
   });
   return (
     <>
       <Suspense fallback={null}>
-        {/* <OrbitControls /> */}
+        <OrbitControls />
+
         <Environment preset="sunset" />
         <ambientLight intensity={0.2} />
         <directionalLight
@@ -44,26 +48,36 @@ export const Experience = () => {
             {item.notAModel === undefined && (
               <Item key={`${item.name}-${idx}`} item={item} />
             )}
+            <>
+              {item.notAModel === false && (
+                <Item key={`${item.name}-${idx}`} item={item} />
+              )}
+            </>
           </>
         ))}
         <Map />
-        <Gameboy />
-        <GithubFloor />
+        {/* <Gameboy /> */}
+        {/* <GithubFloor /> */}
         <MainChar />
+        <TrophiesRoom />
+        {!debug && (
+          <>
+            {characters.map((character) => (
+              <Mascot
+                key={character.id}
+                id={character.id}
+                path={character.path}
+                position={gridToVector3(character.position)}
+                hairColor={character.hairColor}
+                topColor={character.topColor}
+                bottomColor={character.bottomColor}
+                model={character.model}
+              />
+            ))}
+          </>
+        )}
 
-        {characters.map((character) => (
-          <Mascot
-            key={character.id}
-            id={character.id}
-            path={character.path}
-            position={gridToVector3(character.position)}
-            hairColor={character.hairColor}
-            topColor={character.topColor}
-            bottomColor={character.bottomColor}
-            model={character.model}
-          />
-        ))}
-        <Grid infiniteGrid fadeDistance={50} fadeStrength={5} />
+        <Grid infiniteGrid fadeDistance={100} fadeStrength={5} />
       </Suspense>
     </>
   );

@@ -57,7 +57,7 @@ export default function MainChar({ ...props }) {
       onClick={(e) => {
         handleClick(e);
       }}
-      position={[15, 0, 15]}
+      position={[24, 0, 24]}
       rotation-y={Math.PI / 4}
     >
       <group name="Scene">

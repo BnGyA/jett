@@ -57,12 +57,30 @@ fetch("https://api.github.com/graphql", {
   .catch((error) => console.error(error));
 
 const characters = [];
+const hiddeNotModel = false;
 
 const items = {
-  tableCoffee: {
-    name: "tableCoffee",
-    size: [4, 2],
+  pillar: {
+    name: "pillar",
+    size: [2, 2],
   },
+  pillar2: {
+    name: "pillar",
+    size: [2, 2],
+  },
+  pillar3: {
+    name: "pillar",
+    size: [2, 2],
+  },
+  pillar4: {
+    name: "pillar",
+    size: [2, 2],
+  },
+  pillar5: {
+    name: "pillar",
+    size: [2, 2],
+  },
+
   rugRectangle: {
     name: "rugRectangle",
     size: [8, 4],
@@ -74,24 +92,349 @@ const items = {
     size: [2, 2],
     notAModel: true,
   },
+  air_stair_1: {
+    name: hiddeNotModel ? "air" : "cube",
+    size: [2, 2],
+    notAModel: hiddeNotModel,
+  },
+  air_stair_2: {
+    name: hiddeNotModel ? "air" : "cube",
+    size: [2, 2],
+    notAModel: hiddeNotModel,
+  },
+  air_stair_3: {
+    name: hiddeNotModel ? "air" : "cube",
+    size: [2, 2],
+    notAModel: hiddeNotModel,
+  },
+  air_stair_4: {
+    name: hiddeNotModel ? "air" : "cube",
+    size: [2, 2],
+    notAModel: hiddeNotModel,
+  },
+  air_stair_5: {
+    name: hiddeNotModel ? "air" : "cube",
+    size: [2, 2],
+    notAModel: hiddeNotModel,
+  },
+  air_stair_6: {
+    name: hiddeNotModel ? "air" : "cube",
+    size: [2, 2],
+    notAModel: hiddeNotModel,
+  },
+  air_stair_7: {
+    name: hiddeNotModel ? "air" : "cube",
+    size: [2, 2],
+    notAModel: hiddeNotModel,
+  },
+  air_stair_8: {
+    name: hiddeNotModel ? "air" : "cube",
+    size: [2, 2],
+    notAModel: hiddeNotModel,
+  },
+  air_stair_9: {
+    name: hiddeNotModel ? "air" : "cube",
+    size: [2, 2],
+    notAModel: hiddeNotModel,
+  },
+  air_stair_10: {
+    name: hiddeNotModel ? "air" : "cube",
+    size: [2, 2],
+    notAModel: hiddeNotModel,
+  },
+  air_stair_11: {
+    name: hiddeNotModel ? "air" : "cube",
+    size: [2, 2],
+    notAModel: hiddeNotModel,
+  },
+  air_stair_12: {
+    name: hiddeNotModel ? "air" : "cube",
+    size: [2, 2],
+    notAModel: hiddeNotModel,
+  },
+  air_intro_1: {
+    name: hiddeNotModel ? "air" : "cube",
+    size: [2, 22],
+    cube: true,
+    notAModel: hiddeNotModel,
+  },
+  air_intro_2: {
+    name: hiddeNotModel ? "air" : "cube",
+    size: [2, 24],
+    cube: true,
+    notAModel: hiddeNotModel,
+  },
+  air_intro_3: {
+    name: hiddeNotModel ? "air" : "cube",
+    size: [24, 2],
+    cube: true,
+    notAModel: hiddeNotModel,
+  },
+  air_intro_4: {
+    name: hiddeNotModel ? "air" : "cube",
+    size: [28, 2],
+    cube: true,
+    notAModel: hiddeNotModel,
+  },
+  air_trophy_1: {
+    name: hiddeNotModel ? "air" : "cube",
+    size: [2, 22],
+    cube: true,
+    notAModel: hiddeNotModel,
+  },
+  air_trophy_2: {
+    name: hiddeNotModel ? "air" : "cube",
+    size: [22, 2],
+    cube: true,
+    notAModel: hiddeNotModel,
+  },
+  air_github_1: {
+    name: hiddeNotModel ? "air" : "cube",
+    size: [2, 24],
+    cube: true,
+    notAModel: hiddeNotModel,
+  },
+  air_github_2: {
+    name: hiddeNotModel ? "air" : "cube",
+    size: [28, 2],
+    cube: true,
+    notAModel: hiddeNotModel,
+  },
+  air_github_3: {
+    name: hiddeNotModel ? "air" : "cube",
+    size: [2, 24],
+    cube: true,
+    notAModel: hiddeNotModel,
+  },
+  air_charBuild_1: {
+    name: hiddeNotModel ? "air" : "cube",
+    size: [2, 24],
+    cube: true,
+    notAModel: hiddeNotModel,
+  },
+  air_charBuild_2: {
+    name: hiddeNotModel ? "air" : "cube",
+    size: [28, 2],
+    cube: true,
+    notAModel: hiddeNotModel,
+  },
+  air_charBuild_3: {
+    name: hiddeNotModel ? "air" : "cube",
+    size: [2, 24],
+    cube: true,
+    notAModel: hiddeNotModel,
+  },
+  air_project_1: {
+    name: hiddeNotModel ? "air" : "cube",
+    size: [2, 24],
+    cube: true,
+    notAModel: hiddeNotModel,
+  },
+  air_project_2: {
+    name: hiddeNotModel ? "air" : "cube",
+    size: [28, 2],
+    cube: true,
+    notAModel: hiddeNotModel,
+  },
+  air_project_3: {
+    name: hiddeNotModel ? "air" : "cube",
+    size: [2, 24],
+    cube: true,
+    notAModel: hiddeNotModel,
+  },
+  air_instagram_1: {
+    name: hiddeNotModel ? "air" : "cube",
+    size: [2, 24],
+    cube: true,
+    notAModel: hiddeNotModel,
+  },
+  air_instagram_2: {
+    name: hiddeNotModel ? "air" : "cube",
+    size: [28, 2],
+    cube: true,
+    notAModel: hiddeNotModel,
+  },
+  air_instagram_3: {
+    name: hiddeNotModel ? "air" : "cube",
+    size: [2, 24],
+    cube: true,
+    notAModel: hiddeNotModel,
+  },
+  air_timeline_1: {
+    name: hiddeNotModel ? "air" : "cube",
+    size: [2, 42],
+    cube: true,
+    notAModel: hiddeNotModel,
+  },
+  air_timeline_2: {
+    name: hiddeNotModel ? "air" : "cube",
+    size: [8, 2],
+    cube: true,
+    notAModel: hiddeNotModel,
+  },
 };
 
 const map = {
-  size: [20, 20],
+  size: [110, 35],
   gridDivision: 2,
   items: [
     {
-      ...items.tableCoffee,
-      gridPosition: [10, 8],
-      //   rotation: 1,
+      ...items.pillar,
+      gridPosition: [4, 4],
     },
+    {
+      ...items.pillar2,
+      gridPosition: [4, 9],
+    },
+    {
+      ...items.pillar3,
+      gridPosition: [9, 4],
+    },
+    {
+      ...items.pillar4,
+      gridPosition: [4, 13],
+    },
+    {
+      ...items.pillar5,
+      gridPosition: [13, 4],
+    },
+
     {
       ...items.rugRectangle,
       gridPosition: [8, 7],
+      rotation: 1,
     },
     {
       ...items.githubFloor,
       gridPosition: [8, 18],
+    },
+    {
+      ...items.air_stair_1,
+      gridPosition: [26, 22],
+    },
+    {
+      ...items.air_stair_2,
+      gridPosition: [28, 24],
+    },
+    {
+      ...items.air_stair_3,
+      gridPosition: [30, 26],
+    },
+    {
+      ...items.air_stair_4,
+      gridPosition: [32, 28],
+    },
+    {
+      ...items.air_stair_5,
+      gridPosition: [34, 30],
+    },
+    {
+      ...items.air_stair_6,
+      gridPosition: [36, 32],
+    },
+    {
+      ...items.air_stair_7,
+      gridPosition: [22, 26],
+    },
+    {
+      ...items.air_stair_8,
+      gridPosition: [24, 28],
+    },
+    {
+      ...items.air_stair_9,
+      gridPosition: [26, 30],
+    },
+    {
+      ...items.air_stair_10,
+      gridPosition: [28, 32],
+    },
+    {
+      ...items.air_stair_11,
+      gridPosition: [30, 34],
+    },
+    {
+      ...items.air_stair_12,
+      gridPosition: [32, 36],
+    },
+    {
+      ...items.air_intro_1,
+      gridPosition: [34, 38],
+    },
+    {
+      ...items.air_intro_2,
+      gridPosition: [60, 36],
+    },
+    {
+      ...items.air_intro_3,
+      gridPosition: [38, 34],
+    },
+    {
+      ...items.air_intro_4,
+      gridPosition: [34, 60],
+    },
+    {
+      ...items.air_trophy_1,
+      gridPosition: [24, 0],
+    },
+    {
+      ...items.air_trophy_2,
+      gridPosition: [0, 24],
+    },
+    {
+      ...items.air_github_1,
+      gridPosition: [70, 0],
+    },
+    {
+      ...items.air_github_2,
+      gridPosition: [70, 24],
+    },
+    {
+      ...items.air_github_3,
+      gridPosition: [96, 0],
+    },
+    {
+      ...items.air_charBuild_1,
+      gridPosition: [100, 46],
+    },
+    {
+      ...items.air_charBuild_2,
+      gridPosition: [100, 44],
+    },
+    {
+      ...items.air_charBuild_3,
+      gridPosition: [126, 46],
+    },
+    {
+      ...items.air_project_1,
+      gridPosition: [126, 0],
+    },
+    {
+      ...items.air_project_2,
+      gridPosition: [126, 24],
+    },
+    {
+      ...items.air_project_3,
+      gridPosition: [152, 0],
+    },
+    {
+      ...items.air_instagram_1,
+      gridPosition: [158, 46],
+    },
+    {
+      ...items.air_instagram_2,
+      gridPosition: [158, 44],
+    },
+    {
+      ...items.air_instagram_3,
+      gridPosition: [184, 46],
+    },
+    {
+      ...items.air_timeline_1,
+      gridPosition: [210, 0],
+    },
+    {
+      ...items.air_timeline_2,
+      gridPosition: [212, 40],
     },
   ],
 };
@@ -196,10 +539,7 @@ io.on("connection", (socket) => {
     characters.push({
       id: socket.id,
       // position: generateRandomPosition(),
-      position: [
-        map.size[0] * map.gridDivision - 1,
-        map.size[1] * map.gridDivision - 1,
-      ],
+      position: [30 * map.gridDivision - 1, 30 * map.gridDivision - 1],
       hairColor: generateRandomHexColor(),
       topColor: generateRandomHexColor(),
       bottomColor: generateRandomHexColor(),

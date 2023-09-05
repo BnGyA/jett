@@ -5,7 +5,7 @@ import { SkeletonUtils } from "three-stdlib";
 import { useEffect, useMemo } from "react";
 
 export const Item = ({ item }) => {
-  const { name, gridPosition, size, rotation } = item;
+  const { name, gridPosition, size, rotation, cube } = item;
   const [map] = useAtom(mapAtom);
   const { scene } = useGLTF(`/models/items/${name}.glb`);
   // Skinned mesh cannot be re-used in threejs without cloning them
@@ -32,6 +32,8 @@ export const Item = ({ item }) => {
         height / map.gridDivision / 2 + gridPosition[1] / map.gridDivision,
       ]}
       rotation-y={((rotation || 0) * Math.PI) / 2}
+      scale-x={cube ? size[0] / map.gridDivision : 1}
+      scale-z={cube ? size[1] / map.gridDivision : 1}
     />
   );
 };
