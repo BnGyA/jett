@@ -16,6 +16,7 @@ import Map from "./Map";
 import { useGrid } from "../hooks/useGrid";
 import TrophiesRoom from "./Trophies/TrophiesRoom";
 import GithubRoom from "./GithubRoom/GithubRoom";
+import TimeLineRoom from "./TimeLineRoom/TimeLineRoom";
 
 export const Experience = ({ debug }) => {
   const [characters] = useAtom(charactersAtom);
@@ -37,7 +38,7 @@ export const Experience = ({ debug }) => {
   if (!map) return null;
   useFrame((state) => {
     if (!debug) {
-      state.camera.lookAt(20, 0.25, 20);
+      state.camera.lookAt(30, 0.25, 30);
     }
   });
   return (
@@ -73,10 +74,9 @@ export const Experience = ({ debug }) => {
           </>
         ))}
         <Map />
-        {/* <Gameboy /> */}
-
         <MainChar />
         <TrophiesRoom />
+        <TimeLineRoom />
         <GithubRoom />
         {!debug && (
           <>
@@ -95,7 +95,7 @@ export const Experience = ({ debug }) => {
           </>
         )}
 
-        <Grid infiniteGrid fadeDistance={100} fadeStrength={5} />
+        <Grid infiniteGrid fadeDistance={240} fadeStrength={5} />
       </Suspense>
     </>
   );

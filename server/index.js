@@ -530,9 +530,14 @@ io.on("connection", (socket) => {
     const character = characters.find(
       (character) => character.id === socket.id
     );
+
+    console.log("coords", coords);
     if (!coords) return;
-    console.log(coords);
-    character.position = [43 * map.gridDivision - 1, 12 * map.gridDivision - 1];
+
+    character.position = [
+      coords[0] * map.gridDivision - 1,
+      coords[1] * map.gridDivision - 1,
+    ];
     character.path = [];
     io.emit("playerMove", character);
   });

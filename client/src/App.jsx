@@ -25,7 +25,7 @@ function App() {
       {tp.active && <TP />}
       <Dialog char={dialog.char} text={dialog.text} active={dialog.active} />
       <SocketManager />
-      <Canvas shadows camera={{ position: [20, 0.5, 15], fov: 30 }}>
+      <Canvas shadows camera={{ position: [30, 0.5, 25], fov: 30 }}>
         <color attach="background" args={["#ececec"]} />
         <Experience debug={debug} />
       </Canvas>

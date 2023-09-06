@@ -151,13 +151,10 @@ const months = [
 
 const GithubFloor = () => {
   const [githubContrib] = useAtom(githubContribAtom);
+  if (!githubContrib[0]) return null;
   const githubContribWeeks =
     githubContrib[0].data.user?.contributionsCollection.contributionCalendar
       .weeks;
-
-  const githubTotalContributions =
-    githubContrib[0].data.user?.contributionsCollection.contributionCalendar
-      .totalContributions;
 
   return (
     <>
@@ -178,41 +175,7 @@ const GithubFloor = () => {
           @BnGyA
           <meshStandardMaterial color="#40c463" />
         </Text3D>
-        <group position={[18, 1, 60]} rotation-z={Math.PI / 2}>
-          <Text3D
-            curveSegments={32}
-            bevelEnabled
-            bevelSize={0.04}
-            bevelThickness={0.1}
-            height={1.5}
-            lineHeight={0.5}
-            letterSpacing={-0.06}
-            size={3.5}
-            font="/Inter_Bold.json"
-            rotation={[0, Math.PI / 2, 0]}
-            castShadow
-          >
-            {githubTotalContributions}
-            <meshStandardMaterial color="#40c463" />
-          </Text3D>
-        </group>
-        <Text3D
-          curveSegments={32}
-          bevelEnabled
-          bevelSize={0.04}
-          bevelThickness={0.1}
-          height={1.5}
-          lineHeight={0.5}
-          letterSpacing={-0.06}
-          size={4.5}
-          font="/Inter_Bold.json"
-          position={[10, 1, 68]}
-          rotation={[0, Math.PI / 2, 0]}
-          castShadow
-        >
-          Commits
-          <meshStandardMaterial color="#40c463" />
-        </Text3D>
+
         {githubContribWeeks.map((week, weekIndex) => (
           <Week week={week} weekIndex={weekIndex} />
         ))}

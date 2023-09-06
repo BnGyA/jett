@@ -83,23 +83,30 @@ const TP = () => {
     { name: "Projects Room", active: false },
     { name: "Instagram expo", active: false },
     { name: "Developer Info", active: false },
-    { name: "THE Timeline", active: false },
+    {
+      name: "THE Timeline",
+      active: false,
+      coords: [108, 20],
+      room: "timeline",
+    },
   ]);
   const [_tp, setTp] = useAtom(tpAtom);
 
   const handleKeyPress = useCallback((event) => {
     const activeIndex = titles.findIndex((title) => title.active);
+    console.log(activeIndex);
     const updatedTitles = [...titles];
     if (event.key === "Enter") {
-      setTp({
-        ..._tp,
-        active: false,
-        teleportingTo: [0, 0],
-        coords: titles[activeIndex].coords,
-      });
+      setTp({ ..._tp, active: false, room: titles[activeIndex].room });
       setTimeout(() => {
-        setTp({ ..._tp, active: false, room: titles[activeIndex].room });
-      }, 500);
+        setTp({
+          ..._tp,
+          active: false,
+          teleportingTo: [0, 0],
+          room: titles[activeIndex].room,
+          coords: titles[activeIndex].coords,
+        });
+      }, 100);
     }
     if (event.key === "ArrowDown") {
       console.log("ArrowDown key pressed");

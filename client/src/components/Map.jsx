@@ -48,7 +48,7 @@ const Map = () => {
         <meshStandardMaterial color="#f0f0f0" />
       </mesh>
 
-      {/* Trophy room */}
+      {/* INTRO room */}
       <mesh
         rotation-x={-Math.PI / 2}
         position-y={-0.001}
@@ -150,11 +150,11 @@ const Map = () => {
       <mesh
         rotation-x={-Math.PI / 2}
         position-y={-0.001}
-        position-x={108}
+        position-x={107.5}
         position-z={10}
         receiveShadow
       >
-        <planeBufferGeometry args={[4, 20]} />
+        <planeBufferGeometry args={[3, 20]} />
         <meshStandardMaterial color="#f0f0f0" />
       </mesh>
 
