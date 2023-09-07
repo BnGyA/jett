@@ -16,7 +16,7 @@ import { Vector3 } from "three";
 
 const MOUVEMENT_SPEED = 0.062;
 
-export function Mascot({ id, model, hairColor, ...props }) {
+export function Mascot({ id, model, cameraRef, ...props }) {
   const texture = useTexture({
     colorMap: `/models/textures/${model.id}/Mascot_BaseColor.png`,
     roughtnessMap: `/models/textures/${model.id}/Mascot_Roughtness.png`,
@@ -62,14 +62,15 @@ export function Mascot({ id, model, hairColor, ...props }) {
   // used to follow the user with the camera
   const [user] = useAtom(userAtom);
   const [releasedCamera] = useAtom(releasedCameraAtom);
-  const [releasingCamera] = useAtom(releasingCameraAtom);
   const [tp, setTp] = useAtom(tpAtom);
 
   useFrame((state) => {
     if (props.position && tp.teleportingTo !== null) {
+      path.shift();
       setPath(null);
       group.current.position.x = props.position.x;
       group.current.position.z = props.position.z;
+
       setTp({ ...tp, teleportingTo: null });
     } else if (
       path?.length &&
@@ -88,25 +89,17 @@ export function Mascot({ id, model, hairColor, ...props }) {
     } else {
       setAnimation("Idle");
     }
-    if (releasingCamera) {
-      const vec = new Vector3();
 
-      state.camera.position.lerp(
-        vec.set(
-          group.current.position.x + 8,
-          group.current.position.y + 8,
-          group.current.position.z + 8
-        ),
-        0.05
-      );
-    }
     if (id === user && releasedCamera) {
-      // 8 is the default camera position, this is used to follow the user
-      state.camera.position.x = group.current.position.x + 8;
-      state.camera.position.x = group.current.position.x + 8;
-      state.camera.position.y = group.current.position.y + 8;
-      state.camera.position.z = group.current.position.z + 8;
-      state.camera.lookAt(group.current.position);
+      cameraRef.current.setLookAt(
+        group.current.position.x + 8,
+        group.current.position.y + 8,
+        group.current.position.z + 8,
+        group.current.position.x,
+        group.current.position.y,
+        group.current.position.z,
+        true
+      );
     }
   });
 
@@ -116,7 +109,7 @@ export function Mascot({ id, model, hairColor, ...props }) {
       {...props}
       dispose={null}
       position={position}
-      rotation={[0, Math.PI, 0]}
+      rotation={[0, (3 * Math.PI) / 2.4, 0]}
       name={`character-${id}`}
     >
       <group name="Scene">

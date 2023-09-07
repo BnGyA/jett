@@ -2,6 +2,7 @@ import { useCallback, useEffect, useState } from "react";
 import styled, { keyframes, css } from "styled-components";
 import { tpAtom } from "./SocketManager";
 import { useAtom } from "jotai";
+import { useControls } from "leva";
 
 const blinkerAnimation = keyframes`
   50% {
@@ -78,6 +79,8 @@ const Cursor = styled.img`
 `;
 
 const TP = () => {
+  const [{ debug }, set] = useControls(() => ({ debug: true }));
+
   const [titles, setTitles] = useState([
     { name: "Github's floor", active: true, coords: [39, 10], room: "github" },
     { name: "Projects Room", active: false },
@@ -97,16 +100,20 @@ const TP = () => {
     console.log(activeIndex);
     const updatedTitles = [...titles];
     if (event.key === "Enter") {
-      setTp({ ..._tp, active: false, room: titles[activeIndex].room });
+      setTp({
+        ..._tp,
+        active: false,
+        teleportingTo: [0, 0],
+        teleporting: true,
+        room: titles[activeIndex].room,
+        coords: titles[activeIndex].coords,
+      });
       setTimeout(() => {
-        setTp({
-          ..._tp,
-          active: false,
-          teleportingTo: [0, 0],
-          room: titles[activeIndex].room,
-          coords: titles[activeIndex].coords,
-        });
+        set({ debug: true });
       }, 100);
+      setTimeout(() => {
+        set({ debug: false });
+      }, 200);
     }
     if (event.key === "ArrowDown") {
       console.log("ArrowDown key pressed");

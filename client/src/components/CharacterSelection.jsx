@@ -6,7 +6,6 @@ import {
   releasedCameraAtom,
   releasingCameraAtom,
 } from "./SocketManager";
-import { useFrame } from "@react-three/fiber";
 
 const Card = styled.div`
   border: 0.5px solid #96b8de;
@@ -69,13 +68,8 @@ const CharacterSelection = () => {
   const [_releasingCamera, setReleasingCamera] = useAtom(releasingCameraAtom);
   const charNumber = [1, 2, 3, 4, 5, 6];
   const onCharacterConfirm = () => {
-    console.log("confirm");
     setConfirmStatusAtom(true);
-    setReleasingCamera(true);
-    setTimeout(() => {
-      setReleasingCamera(false);
-      setReleasedCamera(true);
-    }, 1500);
+    setReleasedCamera(true);
   };
 
   return (

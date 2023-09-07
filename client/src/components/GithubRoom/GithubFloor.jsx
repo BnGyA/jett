@@ -1,7 +1,11 @@
-import { Text, Text3D } from "@react-three/drei";
+import { Instance, Instances, Text, Text3D } from "@react-three/drei";
 import { githubContribAtom } from "../SocketManager";
 import { useAtom } from "jotai";
+import * as THREE from "three";
+import { useRef } from "react";
 
+const material = new THREE.MeshStandardMaterial({ color: "#40c463" });
+const material2 = new THREE.MeshStandardMaterial({ color: "#39d353" });
 function getWeekNumber(dateString) {
   const date = new Date(dateString);
   date.setHours(0, 0, 0, 0); // Set hours, minutes, seconds, and milliseconds to 0
@@ -30,7 +34,8 @@ function removeLeadingZeroFromNumber(num) {
 }
 
 const calculateYCoord = (monthNum, weekday) => {
-  return weekday + monthNum * 5;
+  // - 30 for the instancedMesh to not be hidden
+  return weekday + monthNum * 5 - 30;
 };
 
 const calculateZCoord = (monthNum, weekNum) => {
@@ -44,7 +49,7 @@ const calculateZCoord = (monthNum, weekNum) => {
   } else if (monthNum === 10 || monthNum === 11 || monthNum === 12) {
     calculatedMonthNum = monthNum - 9;
   }
-  return weekNum + calculatedMonthNum * 12 - 5;
+  return weekNum + calculatedMonthNum * 12 - 5 - 5;
 };
 
 const calculatedContrib = (contributionLevel) => {
@@ -62,39 +67,43 @@ const calculatedContrib = (contributionLevel) => {
 };
 
 const Box = ({ day }) => {
-  const dateSplitted = day.date.split("-");
-  const monthNum = dateSplitted[1];
+  const ref = useRef();
+  //   if (!ref.current) return null;
 
-  return (
-    <mesh
-      position={[
-        calculateYCoord(removeLeadingZeroFromNumber(monthNum), day.weekday),
-        calculatedContrib(day.contributionLevel) / 2,
-        calculateZCoord(
-          removeLeadingZeroFromNumber(monthNum),
-          getWeekNumber(day.date)
-        ),
-      ]}
-      onClick={() => console.log(day.date)}
-      castShadow
-    >
-      <boxBufferGeometry
-        args={[0.5, calculatedContrib(day.contributionLevel) * 5, 0.5]}
-      />
-      <meshStandardMaterial
-        color={day.contributionLevel === "NONE" ? "#39d353" : "#40c463"}
-      />
-    </mesh>
-  );
+  if (ref.current) {
+    const dateSplitted = day.date.split("-");
+    const monthNum = dateSplitted[1];
+    ref.current.scale.y = calculatedContrib(day.contributionLevel);
+
+    ref.current.position.x = calculateYCoord(
+      removeLeadingZeroFromNumber(monthNum),
+      day.weekday
+    );
+    ref.current.position.y = calculatedContrib(day.contributionLevel) / 2;
+    ref.current.position.z = calculateZCoord(
+      removeLeadingZeroFromNumber(monthNum),
+      getWeekNumber(day.date)
+    );
+  }
+  return <Instance ref={ref} />;
 };
 
 const Week = ({ week }) => {
+  const ref = useRef();
+
   return (
-    <group position={[0, 0, 0]}>
-      {week.contributionDays.map((day) => (
-        <Box day={day} />
+    <Instances
+      limit={week.contributionDays.length}
+      ref={ref}
+      position={[30, 0, 5]}
+      range={7}
+    >
+      <boxBufferGeometry args={[0.5, 4, 0.5]} />
+      <meshStandardMaterial color="#39d353" />
+      {week.contributionDays.map((day, i) => (
+        <Box key={i} day={day} />
       ))}
-    </group>
+    </Instances>
   );
 };
 
@@ -171,9 +180,9 @@ const GithubFloor = () => {
           font="/Inter_Bold.json"
           position={[20, 1, 1]}
           castShadow
+          material={material}
         >
           @BnGyA
-          <meshStandardMaterial color="#40c463" />
         </Text3D>
 
         {githubContribWeeks.map((week, weekIndex) => (

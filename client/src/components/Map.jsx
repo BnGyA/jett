@@ -1,17 +1,17 @@
 import { useGrid } from "../hooks/useGrid";
 import { useAtom } from "jotai";
-import { userAtom } from "./SocketManager";
+import { releasedCameraAtom, userAtom } from "./SocketManager";
 import { socket } from "./SocketManager";
 import { useCursor } from "@react-three/drei";
 import { mapAtom } from "./SocketManager";
-import { useThree } from "@react-three/fiber";
+import { useFrame, useThree } from "@react-three/fiber";
 import { useState } from "react";
 
-const Map = () => {
+const Map = ({ cameraRef, debug }) => {
   const [onFloor, setOnfloor] = useState(false);
   const [user] = useAtom(userAtom);
   const [map] = useAtom(mapAtom);
-
+  const [releasedCamera] = useAtom(releasedCameraAtom);
   const { vector3ToGrid } = useGrid();
   useCursor(onFloor);
 
@@ -19,7 +19,6 @@ const Map = () => {
 
   const onCharacterMove = (e) => {
     const character = scene.getObjectByName(`character-${user}`);
-    console.log(e.point);
     if (!character) return;
     socket.emit(
       "move",
@@ -29,6 +28,12 @@ const Map = () => {
   };
 
   const Bridge = [0, 1, 2, 3, 4, 5, 6];
+
+  useFrame((state) => {
+    if (!releasedCamera && !debug) {
+      cameraRef.current.setLookAt(25, 0.5, 25, 30, 0.5, 30);
+    }
+  });
 
   return (
     <group

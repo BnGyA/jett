@@ -1,22 +1,25 @@
-import { Environment, Grid, OrbitControls } from "@react-three/drei";
+import { CameraControls, Environment, Grid } from "@react-three/drei";
 import {
   charactersAtom,
   mapAtom,
+  releasedCameraAtom,
   socket,
   tpAtom,
   userAtom,
 } from "./SocketManager";
 import { useAtom } from "jotai";
-import { Suspense, useEffect } from "react";
+import { Suspense, useEffect, useRef } from "react";
 import { Item } from "./Item";
 import { Mascot } from "./Mascots/Mascot";
-import { useFrame, useThree } from "@react-three/fiber";
+import { useThree } from "@react-three/fiber";
 import MainChar from "./MainChar";
 import Map from "./Map";
 import { useGrid } from "../hooks/useGrid";
 import TrophiesRoom from "./Trophies/TrophiesRoom";
 import GithubRoom from "./GithubRoom/GithubRoom";
 import TimeLineRoom from "./TimeLineRoom/TimeLineRoom";
+import Computer from "./Computer";
+import Book from "./Book";
 
 export const Experience = ({ debug }) => {
   const [characters] = useAtom(charactersAtom);
@@ -26,7 +29,6 @@ export const Experience = ({ debug }) => {
   const [tp] = useAtom(tpAtom);
   const scene = useThree((state) => state.scene);
   const [user] = useAtom(userAtom);
-
   useEffect(() => {
     if (tp.teleportingTo !== null) {
       const character = scene.getObjectByName(`character-${user}`);
@@ -35,23 +37,26 @@ export const Experience = ({ debug }) => {
     }
   }, [tp]);
 
+  const cameraControlsRef = useRef();
+
   if (!map) return null;
-  useFrame((state) => {
-    if (!debug) {
-      state.camera.lookAt(30, 0.25, 30);
-    }
-  });
+
   return (
     <>
       <Suspense fallback={null}>
-        <OrbitControls />
+        {/* <OrbitControls /> */}
+        <CameraControls
+          ref={cameraControlsRef}
+          minDistance={1}
+          enabled={true}
+          maxDistance={100}
+        />
 
         <Environment preset="sunset" />
         <ambientLight intensity={0.2} />
         <directionalLight
           position={[-4, 4, -4]}
           intensity={0.5}
-          castShadow
           shadow-mapSize={[1024, 1024]}
         >
           <orthographicCamera
@@ -73,8 +78,19 @@ export const Experience = ({ debug }) => {
             </>
           </>
         ))}
-        <Map />
+        <Map cameraRef={cameraControlsRef} debug={debug} />
         <MainChar />
+        <Computer position={[24.35, 0.15, 24.35]} rotation-y={Math.PI / 4} />
+        <Book
+          position={[24.35, 0, 24.35]}
+          rotation-y={-Math.PI / 5}
+          color="#e1ad01"
+        />
+        <Book
+          position={[24.35, 0.07, 24.35]}
+          rotation-y={Math.PI}
+          color="#73a580"
+        />
         <TrophiesRoom />
         <TimeLineRoom />
         <GithubRoom />
@@ -86,10 +102,8 @@ export const Experience = ({ debug }) => {
                 id={character.id}
                 path={character.path}
                 position={gridToVector3(character.position)}
-                hairColor={character.hairColor}
-                topColor={character.topColor}
-                bottomColor={character.bottomColor}
                 model={character.model}
+                cameraRef={cameraControlsRef}
               />
             ))}
           </>

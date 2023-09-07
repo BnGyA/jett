@@ -36,7 +36,7 @@ export default function MainChar({ ...props }) {
   const handleClick = (e) => {
     const character = scene.getObjectByName(`character-${user}`);
     const vec = new Vector3();
-    vec.set(16, 0, 16);
+    vec.set(25, 0, 25);
     socket.emit("move", vector3ToGrid(character.position), vector3ToGrid(vec));
 
     e.stopPropagation();

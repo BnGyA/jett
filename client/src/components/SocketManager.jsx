@@ -19,10 +19,18 @@ export const dialogAtom = atom({
 });
 export const tpAtom = atom({
   active: false,
-  github: false,
-  project: false,
+
   teleportingTo: null,
   room: null,
+  teleporting: false,
+});
+
+export const gameStateAtom = atom({
+  github: false,
+  project: false,
+  instagram: false,
+  charBuilder: false,
+  timeline: false,
 });
 
 export const SocketManager = () => {
